@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *weatherMainLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weatherDescriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weatherTempLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *iconView;
 
 @end
 
@@ -36,11 +37,17 @@
     [[WPObjectController sharedInstance] getWeatherWithName:[self.textField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]  completion:^(Weather *weather) {
         
         self.locationNameLabel.text = weather.locationName;
-        self.weatherMainLabel.text = weather.weatherMain;
+        //self.weatherMainLabel.text = weather.weatherMain;
         self.weatherDescriptionLabel.text = weather.weatherDescription;
-        self.weatherTempLabel.text = weather.weatherTemp;
-    
-        
+        double actualTemp = [weather.weatherTemp doubleValue];
+        actualTemp = 1.8 * (actualTemp - 273) +32;
+        NSInteger temp = actualTemp;
+        self.weatherTempLabel.text = [NSString stringWithFormat:@"%ld F", (long)temp];
+        NSString *iconUrl = [NSString stringWithFormat:@"http://openweathermap.org/img/w/%@.png", weather.weatherIcon];
+        NSURL *url =[[NSURL alloc]initWithString:iconUrl];
+        NSData *urlData = [NSData dataWithContentsOfURL:url];
+        UIImage *image = [UIImage imageWithData:urlData];
+        [self.iconView setImage:image];
     }];
     
 }

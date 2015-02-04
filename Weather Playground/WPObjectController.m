@@ -27,12 +27,12 @@
     [[NetworkController api] GET:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *responseWeather = responseObject;
         
-        //Weather *weather;
-        NSMutableArray *weatherInfo = [NSMutableArray new];
-        for (NSDictionary *dictionary in responseWeather) {
-            [weatherInfo addObject:[[Weather alloc]initWithDictionary:dictionary]];
-        }
-        Weather *weather = weatherInfo.firstObject;
+        Weather *weather;
+        //NSMutableArray *weatherInfo = [NSMutableArray new];
+        //for (NSDictionary *dictionary in responseWeather) {
+            weather = [[Weather alloc]initWithDictionary:responseWeather];
+       // }
+        //Weather *weather = weatherInfo.firstObject;
         completion(weather);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
