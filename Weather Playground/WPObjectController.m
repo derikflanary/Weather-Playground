@@ -25,14 +25,14 @@
     NSString *path = [NSString stringWithFormat:@"weather?q=%@", name];
     
     [[NetworkController api] GET:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSArray *responseWeather = responseObject;
+        NSDictionary *responseWeather = responseObject;
         
-        Weather *weather;
-        //NSMutableArray *weatherInfo = [NSMutableArray new];
+        //Weather *weather;
+        NSMutableArray *weatherInfo = [NSMutableArray new];
         for (NSDictionary *dictionary in responseWeather) {
-            weather = [[Weather alloc]initWithDictionary:dictionary];
+            [weatherInfo addObject:[[Weather alloc]initWithDictionary:dictionary]];
         }
-        
+        Weather *weather = weatherInfo.firstObject;
         completion(weather);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
